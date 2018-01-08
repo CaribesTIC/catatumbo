@@ -27,6 +27,12 @@ try {
             //return $handler($request, $response);
             $data = array('code' => 404, 'message'=> 'Pagina no encontrada.' );
             return $response->withJson($data, 404);
+        }elseif(405 === $response->getStatusCode()) {
+            // A 404 should be invoked
+            $handler = $c['notFoundHandler'];
+            //return $handler($request, $response);
+            $data = array('code' => 405, 'message'=> 'Método no permitido para esta solicitud.' );
+            return $response->withJson($data, 405);
         }
 
         // Any other request, pass on current response
