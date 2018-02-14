@@ -24,7 +24,7 @@
         "psr-4": {
             "Tests\\": "tests/",
             "Catatumbo\\":"lib/",
-            "API\\":"module/"
+            "API\\":"modulos/"
         }
     },
     "config": {

@@ -2,6 +2,7 @@
 namespace Catatumbo\Driverdb;
 use Catatumbo\Driverdb\ConfigDatabase;
 use Catatumbo\Core\Common;
+use Catatumbo\Core\Constant;
 /**
  * @propiedad: PROPIETARIO DEL CODIGO
  * @Autor: Gregorio Bolivar
@@ -28,6 +29,8 @@ class Database
                 $v=$config->$index();
                 if($v->driv=='sqlite'){
                     $this->conn = new \PDO($v->dbna);
+                }elseif($v->driv=='pgsql'){
+                    $this->conn = new \PDO($v->driv.':host='.$v->host.';dbname='.$v->dbna.'',''.$v->user.'',''.$v->pass.'');
                 }else{
                     $this->conn = new \PDO($v->driv.':host='.$v->host.';dbname='.$v->dbna.';charset=utf8',''.$v->user.'',''.$v->pass.'');
                 }
@@ -54,11 +57,12 @@ class Database
         //include_once $file;
     }
     public function constructConfigDataBase(){
-        if (file_exists($file = __DIR__.'/../../config/databases.ini')) {
-            $config = parse_ini_file(__DIR__.'/../../config/databases.ini', true);
+        if (file_exists($file = Constant::DIR_CONFIG.'databases.ini')) {
+            $config = parse_ini_file(Constant::DIR_CONFIG.'databases.ini', true);
             // Validamos que los dos archivos no existen
 
-            $ar = fopen(__DIR__."/ConfigDatabaseTmp.php", "w+") or die("Problemas en la creaci&oacute;n del archivo  " . $file);
+            $fileTmp = 'ConfigDatabaseTmp.php';
+            $ar = fopen(__DIR__.DIRECTORY_SEPARATOR.$fileTmp, "w+") or die("Problemas en la creaci&oacute;n del archivo  " . $fileTmp);
             // Inicio la escritura en el activo
             fputs($ar,'<?php'. PHP_EOL);
             fputs($ar,'namespace Catatumbo\Driverdb;'. PHP_EOL);
